@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 using TechJobs.Data;
+using TechJobs.Models;
 using TechJobs.ViewModels;
 
 namespace TechJobs.Controllers
@@ -18,9 +20,14 @@ namespace TechJobs.Controllers
         // The detail display for a given Job at URLs like /Job?id=17
         public IActionResult Index(int id)
         {
-            // TODO #1 - get the Job with the given ID and pass it into the view
+            List<Job> jobz = new List<Job>();
 
-            return View();
+            // TODO #1 - get the Job with the given ID and pass it into the view
+            SearchJobsViewModel searchJobsViewModel = new SearchJobsViewModel();
+            jobz.Add(jobData.Find(id));
+            searchJobsViewModel.Jobs = jobz;
+
+            return View(searchJobsViewModel);
         }
 
         public IActionResult New()
@@ -30,13 +37,45 @@ namespace TechJobs.Controllers
         }
 
         [HttpPost]
+        [Route("Job/New")]
         public IActionResult New(NewJobViewModel newJobViewModel)
         {
             // TODO #6 - Validate the ViewModel and if valid, create a 
             // new Job and add it to the JobData data store. Then
             // redirect to the Job detail (Index) action/view for the new Job.
 
-            return View(newJobViewModel);
+            if (ModelState.IsValid)
+            {
+                Job newJob = new Models.Job
+                {
+                    Name = newJobViewModel.Name,
+                    Employer = newJobViewModel.Employer,
+                    Location = newJobViewModel.Location,
+                    CoreCompetency = newJobViewModel.CoreCompetency,
+                    PositionType = newJobViewModel.PositionType,
+                };
+                
+
+
+
+                jobData.Jobs.Add(newJob);
+                //return Redirect("/job?id=" + newJob.ID);
+                int numba = newJob.ID; ;
+                return RedirectToAction("Index", "Job", new { id = numba });
+                //return Index(numba);
+            }
+
+            else
+            {
+                return View(newJobViewModel);
+            }
+
+            
+
         }
-    }
+    }     
 }
+
+ 
+
+ 

@@ -17,6 +17,22 @@ namespace TechJobs.ViewModels
 
         // TODO #3 - Included other fields needed to create a job,
         // with correct validation attributes and display names.
+        [Required]
+        public Employer Employer { get; set; }
+
+        [Required]
+        //public List<SelectListItem> Location { get; set; }
+        public Location Location { get; set; }
+
+        [Required]
+        [Display(Name = "Skill")]
+        //public List<SelectListItem> CoreCompetency { get; set; }
+        public CoreCompetency CoreCompetency { get; set; }
+
+        [Required]
+        [Display(Name="Position Type")]
+        //public List<SelectListItem> PositionType { get; set; }
+        public PositionType PositionType { get; set; }
 
         public List<SelectListItem> Employers { get; set; } = new List<SelectListItem>();
         public List<SelectListItem> Locations { get; set; } = new List<SelectListItem>();
@@ -31,6 +47,33 @@ namespace TechJobs.ViewModels
             foreach (Employer field in jobData.Employers.ToList())
             {
                 Employers.Add(new SelectListItem {
+                    Value = field.ID.ToString(),
+                    Text = field.Value
+                });
+            }
+
+            foreach (Location field in jobData.Locations.ToList())
+            {
+                Locations.Add(new SelectListItem
+                {
+                    Value = field.ID.ToString(),
+                    Text = field.Value
+                });
+            }
+
+            foreach (CoreCompetency field in jobData.CoreCompetencies.ToList())
+            {
+                CoreCompetencies.Add(new SelectListItem
+                {
+                    Value = field.ID.ToString(),
+                    Text = field.Value
+                });
+            }
+
+            foreach (PositionType field in jobData.PositionTypes.ToList())
+            {
+                PositionTypes.Add(new SelectListItem
+                {
                     Value = field.ID.ToString(),
                     Text = field.Value
                 });
